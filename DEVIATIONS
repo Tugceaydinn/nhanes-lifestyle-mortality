@@ -34,3 +34,7 @@ MORTSTAT and PERMTH_EXM were not examined at the time of these entries; only ELI
 - Age spline: natural cubic spline with 4 df. Interior knots at the 25th, 50th and 75th percentiles of age in the primary complete-case population; boundary knots at its minimum and maximum (expected 20 and 80). The same basis is used in all models, including sensitivity analyses.
 - Confidence intervals: Wald intervals using the t distribution with design degrees of freedom.
 - Hazard ratios are reported only for the exposure of interest in each model.
+
+## 2026-11-17: Implementation of the proportional hazards test (no change to plan)
+
+The plan specifies exposure-by-log-follow-up-time interaction terms with design-based Wald tests (survey::regTermTest). To avoid relying on time-transform terms inside svycoxph, follow-up is split into 6-month episodes and each exposure is interacted with the log of the episode midpoint. Tests use the primary M3 adjustment sets and a joint Wald test of all interaction terms per exposure. Proportional hazards is considered not supported for an exposure if the joint p-value is below 0.05. In that case the pre-specified five-year split is applied and interval-specific hazard ratios are reported. Episode splitting leaves the partial likelihood unchanged; this is checked by reproducing the M3 smoking estimate on the split data.
