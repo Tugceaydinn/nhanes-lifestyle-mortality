@@ -1,0 +1,15 @@
+"variable","level","n","deaths"
+"smoking","never",9796,880
+"smoking","former",4476,888
+"smoking","current",3883,476
+"pa","sufficient",10877,846
+"pa","insufficient",2502,321
+"pa","inactive",4776,1077
+"alcohol","lt12_lifetime",2501,370
+"alcohol","former",3352,824
+"alcohol","current_nonheavy",10944,901
+"alcohol","current_heavy",1358,149
+"bmi_cat","normal",5042,618
+"bmi_cat","underweight",282,64
+"bmi_cat","overweight",6002,744
+"bmi_cat","obese",6829,818
