@@ -28,3 +28,9 @@ MORTSTAT and PERMTH_EXM were not examined at the time of these entries; only ELI
 - Pregnancy: RIDEXPRG = 1 excluded; RIDEXPRG = 3 (cannot ascertain) retained.
 - Participant flow: 22,673 examined adults aged 20+; 22,632 with ELIGSTAT = 1; 22,385 not pregnant; 18,155 complete cases (18.9% excluded). The 10% rule in the plan is therefore met, and multiple imputation will be run as a sensitivity analysis.
 - Added limitations: public-use mortality files are perturbed by NCHS to reduce re-identification risk; linkage through 31 December 2019 is used as pre-specified, although NCHS has since updated linkage through 2022.
+
+## 2026-11-17: Modelling details fixed before running any outcome model (no change to plan)
+
+- Age spline: natural cubic spline with 4 df. Interior knots at the 25th, 50th and 75th percentiles of age in the primary complete-case population; boundary knots at its minimum and maximum (expected 20 and 80). The same basis is used in all models, including sensitivity analyses.
+- Confidence intervals: Wald intervals using the t distribution with design degrees of freedom.
+- Hazard ratios are reported only for the exposure of interest in each model.
