@@ -1,0 +1,17 @@
+# Deviations from analysis_plan.md (plan-v1)
+
+No mortality outcome data had been accessed at the time of the entries below.
+
+## 2026-11-17: Age variable for population definition and age adjustment
+
+Plan: "Adults aged 20 years and older at the MEC examination".
+
+Finding: RIDAGEEX (age at examination, in months) is missing for all 1,443 examined participants aged 80 years or older. In the pooled 2007-2014 demographics files it is also missing for 18,501 of 37,723 examined participants younger than 80.
+
+Decision: use RIDAGEYR (age in years at the screening interview, top-coded at 80) for the age 20+ restriction and for the age spline.
+
+Reason: RIDAGEYR is complete, whereas RIDAGEEX would drop the oldest participants and about half of the examined sample.
+
+Consequences: age is measured at the screening interview rather than at examination (usually a difference of a few weeks). Top-coding at 80 limits resolution of age within the 80+ group. This will be noted as a limitation.
+
+Scope: no change to the research question, exposures, outcome, adjustment sets or models.
