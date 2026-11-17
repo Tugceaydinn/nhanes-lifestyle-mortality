@@ -1,0 +1,12 @@
+$Smoking
+{ Age, Edu, PIR, Race, Sex }
+
+$Alcohol
+{ Age, Edu, PIR, Race, Sex }
+
+$PA
+{ Age, Edu, PIR, Race, Sex }
+
+$BMI
+{ Age, Alcohol, Edu, PA, PIR, Race, Sex, Smoking }
+
