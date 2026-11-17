@@ -15,3 +15,16 @@ Reason: RIDAGEYR is complete, whereas RIDAGEEX would drop the oldest participant
 Consequences: age is measured at the screening interview rather than at examination (usually a difference of a few weeks). Top-coding at 80 limits resolution of age within the 80+ group. This will be noted as a limitation.
 
 Scope: no change to the research question, exposures, outcome, adjustment sets or models.
+
+## 2026-11-17: Operational definitions fixed before outcome linkage (no change to plan)
+
+MORTSTAT and PERMTH_EXM were not examined at the time of these entries; only ELIGSTAT was linked.
+
+- Race/ethnicity: RIDRETH1 (RIDRETH3 is not available in 2007-2010).
+- Education: DMDEDUC2 in four categories; refused and don't know coded as missing.
+- Income-poverty ratio: INDFMPIR categorised as <1.3, 1.3-3.49, >=3.5 (NHANES top-codes at 5).
+- Physical activity: five domains from PAQ605-PAD675; if any domain is unknown (refused, don't know, or time set to missing by NCHS), total activity is missing. Gate answer "no" counts as 0 minutes. S2 cut-points as planned.
+- Alcohol: ALQ101 = 9 or ALQ110 = 9 treated as missing, following the plan's lifetime-drinking rule (this includes 10 participants with ALQ101 = 9 and ALQ110 = 1). Codes 777 and 999 in ALQ120Q and ALQ130 treated as missing.
+- Pregnancy: RIDEXPRG = 1 excluded; RIDEXPRG = 3 (cannot ascertain) retained.
+- Participant flow: 22,673 examined adults aged 20+; 22,632 with ELIGSTAT = 1; 22,385 not pregnant; 18,155 complete cases (18.9% excluded). The 10% rule in the plan is therefore met, and multiple imputation will be run as a sensitivity analysis.
+- Added limitations: public-use mortality files are perturbed by NCHS to reduce re-identification risk; linkage through 31 December 2019 is used as pre-specified, although NCHS has since updated linkage through 2022.
