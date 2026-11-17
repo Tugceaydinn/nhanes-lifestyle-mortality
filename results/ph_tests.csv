@@ -1,0 +1,5 @@
+"exposure","F_statistic","numerator_df","denominator_df","p_value","PH_evidence"
+"Smoking",1.3984896350432,2,47,0.257056854077717,"Insufficient evidence against PH"
+"Alcohol",0.287105877730123,3,45,0.834453109034086,"Insufficient evidence against PH"
+"Physical activity",3.25881009360725,2,47,0.0472742910589799,"Evidence against PH"
+"BMI",0.970943533303716,3,38,0.416488159237207,"Insufficient evidence against PH"

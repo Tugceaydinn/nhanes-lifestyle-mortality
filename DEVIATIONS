@@ -1,6 +1,6 @@
 # Deviations from analysis_plan.md (plan-v1)
 
-No mortality outcome data had been accessed at the time of the entries below.
+The initial operational and modelling decisions below were documented before mortality outcome analysis. Subsequent entries document analysis implementation, diagnostic findings and any resulting decisions.
 
 ## 2026-11-17: Age variable for population definition and age adjustment
 
@@ -38,3 +38,36 @@ MORTSTAT and PERMTH_EXM were not examined at the time of these entries; only ELI
 ## 2026-11-17: Implementation of the proportional hazards test (no change to plan)
 
 The plan specifies exposure-by-log-follow-up-time interaction terms with design-based Wald tests (survey::regTermTest). To avoid relying on time-transform terms inside svycoxph, follow-up is split into 6-month episodes and each exposure is interacted with the log of the episode midpoint. Tests use the primary M3 adjustment sets and a joint Wald test of all interaction terms per exposure. Proportional hazards is considered not supported for an exposure if the joint p-value is below 0.05. In that case the pre-specified five-year split is applied and interval-specific hazard ratios are reported. Episode splitting leaves the partial likelihood unchanged; this is checked by reproducing the M3 smoking estimate on the split data.
+
+## 2026-11-17: Proportional hazards diagnostic results and activation of the pre-specified time-split analysis
+
+The pre-specified proportional hazards diagnostics were implemented using exposure-by-log-follow-up-time interactions in survey-weighted Cox models. Follow-up was split into six-month episodes, and joint design-based Wald tests were used to assess the interaction terms.
+
+Results:
+
+- Smoking: F = 1.398, p = 0.2571.
+- Alcohol: F = 0.287, p = 0.8345.
+- Physical activity: F = 3.259, p = 0.0473.
+- BMI: F = 0.971, p = 0.4165.
+
+Decision: The physical activity model showed evidence against the proportional hazards assumption at the 0.05 significance level. Therefore, the pre-specified five-year time-split analysis will be applied to physical activity, with interval-specific hazard ratios reported. No time-split analysis is triggered by the current diagnostics for smoking, alcohol or BMI.
+
+The six-month episode splitting used for the diagnostic models reproduced the original smoking M3 coefficients (coefficient comparison: TRUE).
+
+Scope: This is an implementation of the pre-specified diagnostic and contingency procedure, not a change to the original analysis plan. The time intervals and estimation details for the five-year analysis will be documented when implemented.
+## 2026-11-17: Five-year time-split analysis for physical activity
+
+The pre-specified five-year split procedure was implemented for physical activity following the PH diagnostic result (joint interaction test p = 0.0473).
+
+Follow-up was divided into two periods: 0–5 years and after 5 years. The period-specific survey-weighted Cox model included physical activity, interactions between physical activity categories and the period after five years, and the pre-specified physical activity M3 adjustment set.
+
+Period-specific hazard ratios (reference: sufficient physical activity):
+
+- Insufficient activity, 0–5 years: HR 1.392 (95% CI 1.091–1.775).
+- Inactive, 0–5 years: HR 2.070 (95% CI 1.722–2.487).
+- Insufficient activity, after 5 years: HR 1.217 (95% CI 0.988–1.500).
+- Inactive, after 5 years: HR 1.662 (95% CI 1.408–1.962).
+
+The joint Wald test of the two physical activity-by-period interaction terms was not statistically significant (F = 1.633; 2 and 47 df; p = 0.2062). This does not establish equality of the period-specific associations; it indicates insufficient evidence of a difference between the two periods in this model.
+
+Outputs are saved in `results/pa_time_varying.csv`, `results/pa_time_varying_interaction_test.csv`, and `results/pa_time_varying_model_coefficients.csv`.
