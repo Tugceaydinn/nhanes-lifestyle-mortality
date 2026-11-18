@@ -80,3 +80,11 @@ Outputs are saved in `results/pa_time_varying.csv`, `results/pa_time_varying_int
 ## 2026-11-18: Survey design construction in the PH and time-split analyses (no change to plan)
 
 The plan specifies building the survey design before subsetting. The primary models (M1-M3) follow this (subset of the design built on all examined participants). The proportional hazards tests and the five-year time-split analysis were run on designs built from the complete-case rows only, because the episode-split data were created from the complete-case population. For the M3 smoking model, the design built on complete cases gave the same standard errors and the same design degrees of freedom as the subset of the full design (all.equal = TRUE). This equivalence was checked for that model only; the same construction was used for the other models.
+
+## 2026-11-18: Multiple imputation specification fixed before running imputation (no change to plan)
+
+- Population: eligible non-pregnant adults (n = 22,385).
+- Imputed variables: smoking, alcohol, physical activity, BMI category, education and income-poverty ratio (polytomous regression, mice method "polyreg").
+- Predictors: all other analysis variables (sex, race, age), the mortality event indicator, the Nelson-Aalen cumulative hazard, the examination weight, strata and PSU. Follow-up time enters only through the Nelson-Aalen estimate. Participant ID is not used.
+- Settings: 50 imputed datasets, 10 iterations, cluster seed 20261118. Imputations are run in parallel (mice::parlmice) because one iteration takes about 1.5 minutes. Convergence is checked graphically.
+- Analysis: primary M3 models only, fitted in each imputed dataset with the same survey design variables as the primary analysis, and pooled with Rubin's rules.

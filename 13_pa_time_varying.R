@@ -1,13 +1,4 @@
 # 13_pa_time_varying.R
-# Time-varying effects of physical activity on all-cause mortality.
-# This analysis follows the pre-specified five-year split approach
-# because the proportional hazards test provided evidence against PH.
-#
-# Primary population: complete-case NHANES participants aged 20+.
-# Survey design: examination weights, strata and PSU.
-# Reference category: sufficient physical activity.
-
-# 13_pa_time_varying.R
 # Five-year time-split analysis for physical activity.
 # This analysis is triggered by the physical activity PH test.
 #
@@ -219,4 +210,8 @@ pa_model_coefficients <- data.frame(
   standard_error = sqrt(diag(vcov(fit_pa_period_final)))
 )
 
-write.csv(ph_table, "output/ph_tests.csv", row.names = FALSE)
+write.csv(
+  pa_model_coefficients,
+  "results/pa_time_varying_model_coefficients.csv",
+  row.names = FALSE
+)

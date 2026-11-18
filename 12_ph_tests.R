@@ -4,9 +4,10 @@
 # Follow-up is split into 6-month episodes.
 # The log of each episode midpoint is used as the time interaction term.
 #
-# Important:
-# The 0.5-month shift is retained from the original analysis implementation.
-# SEQN is preserved to identify repeated participant records.
+# Note: 0.5 month is added to the follow-up time (tstop) so that participants
+# with permth_exm = 0 have a positive-length interval. The shift is applied
+# uniformly, so the order of events is unchanged. SEQN is kept to check the
+# number of unique participants after splitting.
 
 library(survival)
 library(survey)
@@ -239,6 +240,6 @@ if (!dir.exists("results")) {
   dir.create("results", recursive = TRUE)
 }
 
-write.csv(ph_table, "output/ph_tests.csv", row.names = FALSE)
+write.csv(ph_table, "results/ph_tests.csv", row.names = FALSE)
 
 cat("\nPH results saved successfully.\n")
