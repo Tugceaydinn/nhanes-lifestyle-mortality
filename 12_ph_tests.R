@@ -239,10 +239,6 @@ if (!dir.exists("results")) {
   dir.create("results", recursive = TRUE)
 }
 
-write.csv(
-  ph_table,
-  "results/ph_tests.csv",
-  row.names = FALSE
-)
+write.csv(ph_table, "output/ph_tests.csv", row.names = FALSE)
 
 cat("\nPH results saved successfully.\n")

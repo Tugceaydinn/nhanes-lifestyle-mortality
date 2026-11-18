@@ -71,4 +71,4 @@ hr_table <- bind_rows(lapply(exposures, function(x) {
 hr_table[, c("HR", "lower", "upper")] <- round(hr_table[, c("HR", "lower", "upper")], 2)
 print(hr_table, row.names = FALSE)
 
-write.csv(hr_table, "output/hr_models.csv", row.names = FALSE)
+write.csv(hr_table, "results/hr_models.csv", row.names = FALSE)

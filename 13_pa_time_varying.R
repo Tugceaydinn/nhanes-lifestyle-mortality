@@ -219,8 +219,4 @@ pa_model_coefficients <- data.frame(
   standard_error = sqrt(diag(vcov(fit_pa_period_final)))
 )
 
-write.csv(
-  pa_model_coefficients,
-  "results/pa_time_varying_model_coefficients.csv",
-  row.names = FALSE
-)
+write.csv(ph_table, "output/ph_tests.csv", row.names = FALSE)
