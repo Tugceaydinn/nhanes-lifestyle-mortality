@@ -1,0 +1,10 @@
+"analysis","exposure","term","HR","lower","upper"
+"M3 primary","bmi_cat","bmi_catunderweight",1.97,1.41,2.75
+"M3 primary","bmi_cat","bmi_catoverweight",0.82,0.72,0.94
+"M3 primary","bmi_cat","bmi_catobese",0.98,0.86,1.11
+"S1 landmark 24 months","bmi_cat","bmi_catunderweight",1.91,1.25,2.92
+"S1 landmark 24 months","bmi_cat","bmi_catoverweight",0.84,0.72,0.98
+"S1 landmark 24 months","bmi_cat","bmi_catobese",1.01,0.87,1.18
+"S3 excluding baseline chronic disease","bmi_cat","bmi_catunderweight",2.49,1.26,4.94
+"S3 excluding baseline chronic disease","bmi_cat","bmi_catoverweight",0.96,0.73,1.26
+"S3 excluding baseline chronic disease","bmi_cat","bmi_catobese",1.05,0.78,1.42

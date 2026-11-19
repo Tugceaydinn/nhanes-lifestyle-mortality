@@ -26,19 +26,48 @@ mcq_vars <- c("MCQ160B", "MCQ160C", "MCQ160D", "MCQ160E", "MCQ160F",  # heart fa
 
 stopifnot(all(c("SEQN", mcq_vars) %in% names(mcq)),
           all(c("SEQN", "LBXSCR") %in% names(biopro)),
-          all(c("SEQN", "URDACT") %in% names(albcr)))
+          all(c("SEQN", "URXUMA", "URXUCR", "URDACT") %in% names(albcr)))
+
+# 2. Urine albumin-creatinine ratio ----------------------------------------------------
+# URDACT is not available in the 2007-2008 file. NCHS documents it as
+# URDACT = URXUMA / URXUCR x 100 (mg/g). The same formula is applied to the
+# 2007-2008 measurements only if it reproduces the released URDACT in the
+# other cycles and the components are available in 2007-2008 (rule recorded in
+# DEVIATIONS.md). Otherwise S3 is not implemented.
+
+alb <- albcr %>%
+  mutate(cycle5    = SEQN %in% analytic$SEQN[analytic$SDDSRVYR == 5],
+         uacr_calc = round(100 * URXUMA / URXUCR, 2))
+
+other  <- alb %>% filter(!cycle5, !is.na(URDACT))
+max_diff <- max(abs(other$URDACT - other$uacr_calc), na.rm = TRUE)
+n_c5       <- sum(alb$cycle5 & !is.na(alb$uacr_calc))
+n_c5_total <- sum(alb$cycle5)
+
+cat("\nFormula check in 2009-2014 (n =", nrow(other), "): max |URDACT - calculated| =", max_diff, "\n")
+cat("2007-2008: participants with a calculated UACR:", n_c5, "of", n_c5_total, "\n")
+
+if (!is.finite(max_diff) || max_diff > 0.02 || n_c5 < 0.5 * n_c5_total) {
+  stop("The UACR formula does not reproduce URDACT in 2009-2014, or the components are ",
+       "mostly missing in 2007-2008. S3 cannot be harmonised: do not implement it ",
+       "(see the analysis plan) and document the limitation.")
+}
+
+alb <- alb %>% mutate(uacr = ifelse(is.na(URDACT), uacr_calc, URDACT))
+
+# 3. Merge ---------------------------------------------------------------------------------
 
 analytic <- analytic %>%
-  select(-any_of(c(mcq_vars, "LBXSCR", "URDACT"))) %>%    # lets the script be re-run
+  select(-any_of(c(mcq_vars, "LBXSCR", "URDACT", "URXUMA", "URXUCR", "uacr"))) %>%   # lets the script be re-run
   left_join(select(mcq, SEQN, all_of(mcq_vars)), by = "SEQN") %>%
   left_join(select(biopro, SEQN, LBXSCR), by = "SEQN") %>%
-  left_join(select(albcr, SEQN, URDACT), by = "SEQN")
+  left_join(select(alb, SEQN, uacr), by = "SEQN")
 
 stopifnot(nrow(analytic) == 39166)
 
-# 2. Harmonisation check: percent missing by cycle (eligible adults) --------------
+# 4. Harmonisation check: percent missing by cycle (eligible adults) --------------
 
-check_vars <- c(mcq_vars, "LBXSCR", "URDACT")
+check_vars <- c(mcq_vars, "LBXSCR", "uacr")
 
 miss_by_cycle <- analytic %>%
   filter(eligible) %>%
@@ -53,7 +82,7 @@ if (any(miss_by_cycle[, -1] > 0.5)) {
        "harmonised across the four cycles. Do not use a substitute (see the analysis plan).")
 }
 
-# 3. Derive the baseline conditions --------------------------------------------------
+# 5. Derive the baseline conditions --------------------------------------------------
 
 # Three-valued status: TRUE if any item is "yes" (1); FALSE if all items are "no" (2);
 # NA otherwise (refused, don't know, or not asked).
@@ -78,8 +107,8 @@ analytic <- analytic %>%
     cancer = dom_status(MCQ220),
     copd   = dom_status(MCQ160G, MCQ160K),
     egfr   = egfr_2021(LBXSCR, age, sex == "female"),
-    ckd    = case_when(egfr < 60 | URDACT >= 30       ~ TRUE,
-                       !is.na(egfr) & !is.na(URDACT)  ~ FALSE),
+    ckd    = case_when(egfr < 60 | uacr >= 30         ~ TRUE,
+                       !is.na(egfr) & !is.na(uacr)    ~ FALSE),
     chronic = cvd | cancer | copd | ckd,    # TRUE if any condition is present
     s3_excl = chronic %in% TRUE             # known to have at least one condition
   )
@@ -89,7 +118,7 @@ elig <- analytic %>% filter(eligible)
 cat("\neGFR summary (mL/min/1.73 m2):\n")
 print(summary(elig$egfr))
 cat("\nUACR summary (mg/g):\n")
-print(summary(elig$URDACT))
+print(summary(elig$uacr))
 
 # Status counts by condition (unweighted, eligible adults)
 conditions <- c("cvd", "cancer", "copd", "ckd", "chronic")
@@ -104,7 +133,7 @@ cat("\nStatus counts (eligible adults, n = 22385):\n")
 print(status_counts)
 write.csv(status_counts, "results/s3_status_counts.csv", row.names = FALSE)
 
-# 4. Survey design (built on all examined participants, as pre-specified) ----------
+# 6. Survey design (built on all examined participants, as pre-specified) ----------
 
 des <- svydesign(id = ~SDMVPSU, strata = ~SDMVSTRA, weights = ~wt,
                  nest = TRUE, data = analytic)
@@ -118,7 +147,7 @@ prev <- sapply(conditions, function(v) {
 cat("\nWeighted prevalence (%) of each condition, eligible adults:\n")
 print(prev)
 
-# 5. S3 population and model ----------------------------------------------------------
+# 7. S3 population and model ----------------------------------------------------------
 
 des_s3 <- subset(des, complete & !s3_excl)
 
@@ -147,7 +176,7 @@ s3 <- data.frame(analysis = "S3 excluding baseline chronic disease",
                  upper    = round(exp(b[idx] + crit * se[idx]), 2),
                  row.names = NULL)
 
-# 6. Compare with the primary M3 and S1 estimates for BMI and save -------------------
+# 8. Compare with the primary M3 and S1 estimates for BMI and save -------------------
 
 ref <- read.csv("results/sensitivity_s1_s2.csv") %>%
   filter(exposure == "bmi_cat",
