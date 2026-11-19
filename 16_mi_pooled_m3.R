@@ -21,7 +21,7 @@ dir.create("results", showWarnings = FALSE)
 # 1. Convergence plot (diagnostic only) -------------------------------------
 # Chain means and SDs of the imputed values per iteration. For categorical
 # variables mice may not draw useful panels; if the figure is empty, say so.
-png("results/mi_convergence.png", width = 2000, height = 1400, res = 200)
+png("results/mi_convergence_%d.png", width = 2000, height = 1400, res = 200)
 try(print(plot(imp, impute_variables)))
 dev.off()
 
