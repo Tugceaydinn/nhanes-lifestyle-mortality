@@ -88,3 +88,9 @@ The plan specifies building the survey design before subsetting. The primary mod
 - Predictors: all other analysis variables (sex, race, age), the mortality event indicator, the Nelson-Aalen cumulative hazard, the examination weight, strata and PSU. Follow-up time enters only through the Nelson-Aalen estimate. Participant ID is not used.
 - Settings: 50 imputed datasets, 10 iterations, cluster seed 20261118. Imputations are run in parallel (mice::parlmice) because one iteration takes about 1.5 minutes. Convergence is checked graphically.
 - Analysis: primary M3 models only, fitted in each imputed dataset with the same survey design variables as the primary analysis, and pooled with Rubin's rules.
+
+## 2026-11-19: Multiple imputation run (no change to plan)
+
+The 50 imputations were run as specified (10 iterations, cluster seed 20261118) in parallel with mice::parlmice on 10 workers, using mice version 3.19.0. The run took 1.46 hours; no logged events; no missing values remained in the imputed variables. mice has since deprecated parlmice in favour of futuremice; the run is unaffected.
+
+Pooled analysis: the primary M3 model for each exposure is fitted in each imputed dataset on the eligible non-pregnant population (n = 22,385) and pooled with Rubin's rules (mitools::MIcombine), with design degrees of freedom as the complete-data degrees of freedom. The age spline uses the same knots as the primary analysis. The design is built from the eligible rows rather than subsetted from the full design; because no PSU is lost, this is equivalent (design degrees of freedom are checked against the primary analysis).
