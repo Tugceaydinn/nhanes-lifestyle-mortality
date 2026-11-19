@@ -1,0 +1,23 @@
+"analysis","exposure","term","HR","lower","upper"
+"M3 primary","smoking","smokingformer",1.25,1.08,1.44
+"M3 primary","smoking","smokingcurrent",2.23,1.94,2.57
+"M3 primary","alcohol","alcoholformer",1.4,1.15,1.7
+"M3 primary","alcohol","alcoholcurrent_nonheavy",0.83,0.69,1
+"M3 primary","alcohol","alcoholcurrent_heavy",1.26,0.92,1.71
+"M3 primary","pa","painsufficient",1.29,1.1,1.52
+"M3 primary","pa","painactive",1.85,1.63,2.1
+"M3 primary","bmi_cat","bmi_catunderweight",1.97,1.41,2.75
+"M3 primary","bmi_cat","bmi_catoverweight",0.82,0.72,0.94
+"M3 primary","bmi_cat","bmi_catobese",0.98,0.86,1.11
+"S1 landmark 24 months","smoking","smokingformer",1.27,1.09,1.49
+"S1 landmark 24 months","smoking","smokingcurrent",2.37,2.04,2.75
+"S1 landmark 24 months","alcohol","alcoholformer",1.4,1.12,1.75
+"S1 landmark 24 months","alcohol","alcoholcurrent_nonheavy",0.84,0.68,1.04
+"S1 landmark 24 months","alcohol","alcoholcurrent_heavy",1.18,0.86,1.63
+"S1 landmark 24 months","pa","painsufficient",1.26,1.09,1.47
+"S1 landmark 24 months","pa","painactive",1.74,1.53,1.99
+"S1 landmark 24 months","bmi_cat","bmi_catunderweight",1.91,1.25,2.92
+"S1 landmark 24 months","bmi_cat","bmi_catoverweight",0.84,0.72,0.98
+"S1 landmark 24 months","bmi_cat","bmi_catobese",1.01,0.87,1.18
+"S2 PA cut-points 0 / 1-299 / 300+","pa_s2","pa_s2insufficient",1.13,0.99,1.29
+"S2 PA cut-points 0 / 1-299 / 300+","pa_s2","pa_s2inactive",1.83,1.59,2.09
